@@ -17,14 +17,20 @@ public abstract class Visitor {
   public abstract void VisitVariableElement(VariableElement element);
   public abstract void VisitIndexerElement(IndexerElement element);
   public abstract void VisitIntegerElement(IntegerElement element);
+  public abstract void VisitMatrixElement (MatrixElement element);
   public abstract void VisitAssignmentOperationElement(AssignmentOperationElement element);
   public abstract void VisitAdditionOperationElement(AdditionOperationElement element);
+  public abstract void VisitMultiplicationOperationElement(MultiplicationOperationElement element);
+  public abstract void VisitParallelForElement(ParallelForElement element);
   public abstract void VisitPrintOperationElement(PrintOperationElement element);
 
   public void VisitElement(Element element){
     if(element instanceof IntegerElement){
       IntegerElement int_elem = (IntegerElement) element;
       VisitIntegerElement(int_elem);       
+    } else if(element instanceof MatrixElement){
+      MatrixElement mat_elem = (MatrixElement) element;
+      VisitMatrixElement(mat_elem);
     } else if(element instanceof VariableElement){
       VariableElement var_elem = (VariableElement) element;
       VisitVariableElement(var_elem);
@@ -33,10 +39,16 @@ public abstract class Visitor {
       VisitIndexerElement(ind_elem);
     } else if(element instanceof AdditionOperationElement){
       AdditionOperationElement add_elem = (AdditionOperationElement) element;
-      VisitAdditionOperationElement(add_elem);          
+      VisitAdditionOperationElement(add_elem);
+    } else if(element instanceof MultiplicationOperationElement){
+      MultiplicationOperationElement mul_elem = (MultiplicationOperationElement) element;
+      VisitMultiplicationOperationElement(mul_elem);
     } else if(element instanceof AssignmentOperationElement){
       AssignmentOperationElement assign_elem = (AssignmentOperationElement) element;
-      VisitAssignmentOperationElement(assign_elem);      
+      VisitAssignmentOperationElement(assign_elem);
+    } else if(element instanceof ParallelForElement){
+      ParallelForElement paral_elem = (ParallelForElement) element;
+      VisitParallelForElement(paral_elem);
     }
   }
 

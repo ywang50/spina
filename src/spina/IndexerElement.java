@@ -11,13 +11,16 @@ package spina;
  */
 public class IndexerElement extends Element {
 
-  String mText;
+  String nameText;
+  String iterText;
 
   public void Accept(Visitor visitor){
     visitor.VisitIndexerElement(this);
   }
 
-  public String getText() { return mText; }
-  public void setText(String text) { mText = text; }
+  public String getName() { return nameText; }
+  public void setName(String text) { nameText = text; }
+  public String getIter() { return iterText; }
+  public void setIter(String text) { iterText = text; }
 }
 

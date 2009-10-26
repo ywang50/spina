@@ -22,6 +22,9 @@ public class PrettyPrintVisitor extends Visitor {
   public void VisitIntegerElement(IntegerElement element){
     System.out.print("int:" + element.getText() + " ");
   }
+  public void VisitMatrixElement(MatrixElement element) {
+      //////////
+  }
   public void VisitAssignmentOperationElement(AssignmentOperationElement element){
     VisitElement(element.getLhs());
     System.out.print(":= ");
@@ -33,6 +36,18 @@ public class PrettyPrintVisitor extends Visitor {
     System.out.print("+ ");
     VisitElement(element.getRhs());
     System.out.print(" ");
+  }
+  public void VisitMultiplicationOperationElement(MultiplicationOperationElement element){
+    VisitElement(element.getLhs());
+    System.out.print("* ");
+    VisitElement(element.getRhs());
+    System.out.print(" ");
+  }
+  public void VisitParallelForElement(ParallelForElement element){
+    int count = element.numberOfElements();
+    for (int i = 0; i < count; i++) {
+        VisitAssignmentOperationElement(element.getAssignment(i));
+    }
   }
   public void VisitPrintOperationElement(PrintOperationElement element){
     System.out.print("function:print ");

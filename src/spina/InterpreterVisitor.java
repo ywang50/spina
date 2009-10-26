@@ -41,6 +41,9 @@ public class InterpreterVisitor extends Visitor {
     Integer element_value = Integer.decode(element.getText());
     mStack.push(element_value);
   }
+  public void VisitMatrixElement(MatrixElement element){
+      ////////////
+  }
   public void VisitAssignmentOperationElement(AssignmentOperationElement element){
     String variable_name = element.getLhs().getText();
 
@@ -56,6 +59,12 @@ public class InterpreterVisitor extends Visitor {
     Integer lhs = mStack.pop();
     Integer result = new Integer(rhs.intValue() + lhs.intValue());
     mStack.push(result);    
+  }
+  public void VisitMultiplicationOperationElement(MultiplicationOperationElement element) {
+      ////////////////////
+  }
+  public void VisitParallelForElement(ParallelForElement element) {
+      
   }
   public void VisitPrintOperationElement(PrintOperationElement element){
     VisitElement(element.getChildElement());

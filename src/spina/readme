@@ -1,0 +1,17 @@
+Spina Syntax
+
+program: (top_level_expression)+;
+top_level_expression: (assignment | parallel-for | print);
+assignment: ((variable | indexer) '=' (literal | addition | multiplication) ';');
+addition: (variable | indexer | literal) + (variable | indexer | literal);
+multiplication: (variable | indexer | literal) * (variable | indexer | literal);
+indexer: variable '<' variable '>';
+literal: (scalar_literal | matrix_literal);
+variable: ('a'..'z' | 'A'..'Z') ('a'..'z' | 'A'..'Z' | '0'..'9')*;
+scalar_literal: number;
+matrix_literal: '[' matrix_literal_row+ ']';
+matrix_literal_row: '(' number (',' number)* ')';
+number: ('0' | ('1'..'9) ('0'..'9')*);
+parallel-for: 'parallel-for' '(' variable '=' number '..' number ')' parallel-for_body;
+parallel-for_body: '{' assignment+ '}';
+print: 'print' (variable | indexer | literal);
