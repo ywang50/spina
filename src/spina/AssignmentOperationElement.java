@@ -13,15 +13,15 @@ package spina;
 
 public class AssignmentOperationElement extends Element {
 
-  VariableElement mLhs;
+  Element mLhs;
   Element mRhs;  
 
   public void Accept(Visitor visitor){
     visitor.VisitAssignmentOperationElement(this);
   }
 
-  public VariableElement getLhs() { return mLhs; }
-  public void setLhs(VariableElement lhs) { mLhs = lhs; }
+  public Element getLhs() { return mLhs; }
+  public void setLhs(Element lhs) { mLhs = lhs; }
 
   public Element getRhs() { return mRhs; }
   public void setRhs(Element rhs) { mRhs = rhs; }

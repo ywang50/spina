@@ -13,13 +13,12 @@ import java.util.Vector;
  */
 public class MatrixElement extends Element{
 
-  String mText;
-  Vector<IntegerElement> mElems;
-  int mRow;
+  private Vector<String> mElems;
+  private int mRow;
   
   public MatrixElement() {
     mRow = 0;
-    mElems = new Vector<IntegerElement>();
+    mElems = new Vector<String>();
   }
 
   public void Accept(Visitor visitor){
@@ -29,22 +28,20 @@ public class MatrixElement extends Element{
   public int getRow() { return mRow; }
   public void setRow(int value) { mRow = value; }
   public void increRow() { mRow++; }
-  public int getCol() { return mElems.size()/(mRow + 1); }
+  public int getCol() { return mElems.size()/mRow; }
 
   public void addText(String value) {
-      IntegerElement ele = new IntegerElement();
-      ele.setText(value);
-      mElems.add(ele);
-  }
-
-  public void setText(int row, int col, String value) {
-      int index = row * getCol() + col;
-      mElems.elementAt(index).setText(value);
+      mElems.add(value);
   }
 
   public String getText(int row, int col) {
       int index = row * getCol() + col;
-      return mElems.elementAt(index).getText();
+      return mElems.elementAt(index);
+  }
+
+  public Matrix GetMatrixLiteral() {
+      Matrix mat = new Matrix(mElems, mRow);
+      return mat;
   }
 
 }
