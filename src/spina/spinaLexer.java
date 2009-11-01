@@ -1,6 +1,4 @@
-// $ANTLR 3.1.3 Mar 18, 2009 10:09:25 spina.g 2009-10-26 12:25:49
-
-package spina;
+// $ANTLR 3.1.3 Mar 18, 2009 10:09:25 spina.g 2009-11-01 04:05:42
 
 import org.antlr.runtime.*;
 import java.util.Stack;

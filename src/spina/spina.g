@@ -82,7 +82,7 @@ indexer returns [IndexerElement ret]
 @init {
   retval.ret = new IndexerElement();
 }
-  : VAR1=VARIABLE { retval.ret.setText($VAR1.text); }
+  : VAR1=VARIABLE { retval.ret.setName($VAR1.text); }
   '<'
   VAR2=VARIABLE { retval.ret.setIter($VAR2.text); }
   '>';
@@ -95,7 +95,7 @@ scalar_literal returns [IntegerElement ret]
 @init {
   retval.ret = new IntegerElement();
 }
-  : INTEGER { retval.ret.setText($INTERGER.text); };
+  : INTEGER { retval.ret.setText($INTEGER.text); };
 
 matrix_literal returns [MatrixElement ret]
 @init {

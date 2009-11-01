@@ -11,8 +11,8 @@ package spina;
  */
 public class IndexerElement extends Element {
 
-  String nameText;
-  String iterText;
+  private String nameText;
+  private String iterText;
 
   public void Accept(Visitor visitor){
     visitor.VisitIndexerElement(this);
@@ -22,5 +22,11 @@ public class IndexerElement extends Element {
   public void setName(String text) { nameText = text; }
   public String getIter() { return iterText; }
   public void setIter(String text) { iterText = text; }
+
+  public void replaceIteratorText(String orig, String repl) {
+      if (iterText.equals(orig)) {
+          this.setIter(repl);
+      }
+  }
 }
 

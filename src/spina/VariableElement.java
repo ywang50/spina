@@ -21,4 +21,10 @@ public class VariableElement extends Element {
 
   public String getText() { return mText; }
   public void setText(String text) { mText = text; }
+
+  public void replaceVariableText(String orig, String repl) {
+      if (mText.equals(orig)) {
+          this.setText(repl);
+      }
+  }
 }

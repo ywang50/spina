@@ -1,4 +1,4 @@
-// $ANTLR 3.1.3 Mar 18, 2009 10:09:25 spina.g 2009-10-26 12:25:49
+// $ANTLR 3.1.3 Mar 18, 2009 10:09:25 spina.g 2009-11-01 04:05:41
 
 package spina;
 
@@ -937,7 +937,7 @@ public class spinaParser extends Parser {
             VAR1_tree = (Object)adaptor.create(VAR1);
             adaptor.addChild(root_0, VAR1_tree);
 
-             retval.ret.setText((VAR1!=null?VAR1.getText():null)); 
+             retval.ret.setName((VAR1!=null?VAR1.getText():null)); 
             char_literal15=(Token)match(input,ANG_BRACKET_LEFT,FOLLOW_ANG_BRACKET_LEFT_in_indexer408); 
             char_literal15_tree = (Object)adaptor.create(char_literal15);
             adaptor.addChild(root_0, char_literal15_tree);
@@ -1096,7 +1096,7 @@ public class spinaParser extends Parser {
             INTEGER19_tree = (Object)adaptor.create(INTEGER19);
             adaptor.addChild(root_0, INTEGER19_tree);
 
-             retval.ret.setText($INTERGER.text); 
+             retval.ret.setText((INTEGER19!=null?INTEGER19.getText():null)); 
 
             }
 

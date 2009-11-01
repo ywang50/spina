@@ -25,4 +25,29 @@ public class AssignmentOperationElement extends Element {
 
   public Element getRhs() { return mRhs; }
   public void setRhs(Element rhs) { mRhs = rhs; }
+
+  public void replaceText(String orig, String repl) {
+    if (mLhs instanceof VariableElement) {
+        ((VariableElement)mLhs).replaceVariableText(orig, repl);
+    }
+    else if (mLhs instanceof IndexerElement) {
+        ((IndexerElement)mLhs).replaceIteratorText(orig, repl);
+    }
+    if (mRhs instanceof AdditionOperationElement) {
+        if (((AdditionOperationElement)mRhs).getLhs() instanceof VariableElement) {
+            ((VariableElement)((AdditionOperationElement)mRhs).getLhs()).replaceVariableText(orig, repl);
+        }
+        else if (((AdditionOperationElement)mRhs).getLhs() instanceof IndexerElement) {
+            ((IndexerElement)((AdditionOperationElement)mRhs).getLhs()).replaceIteratorText(orig, repl);
+        }
+    }
+    else if (mRhs instanceof MultiplicationOperationElement) {
+        if (((MultiplicationOperationElement)mRhs).getLhs() instanceof VariableElement) {
+            ((VariableElement)((MultiplicationOperationElement)mRhs).getLhs()).replaceVariableText(orig, repl);
+        }
+        else if (((MultiplicationOperationElement)mRhs).getLhs() instanceof IndexerElement) {
+            ((IndexerElement)((MultiplicationOperationElement)mRhs).getLhs()).replaceIteratorText(orig, repl);
+        }
+    }
+  }
 }
