@@ -123,7 +123,7 @@ public class InterpreterVisitor extends Visitor implements Runnable {
         // Indexer ind[3] is store in the hashtable as variable "ind:3"
         IndexerElement index_elem = (IndexerElement)lelem;
         String index = index_elem.getIter();
-        if (mVariableMap.contains(index)) {
+        if (mVariableMap.containsKey(index)) {
             variable_name = GetIndexerHashKey(index_elem.getName(), index);
         }
         else
@@ -192,16 +192,22 @@ public class InterpreterVisitor extends Visitor implements Runnable {
   public void VisitParallelForElement(ParallelForElement element) {
     int start = element.getStart();
     int end = element.getEnd();
-    String var = element.getVar();
+    String orig = element.getVar();
     Vector<Thread> threads = new Vector<Thread>();
     Vector<InterpreterVisitor> visitors = new Vector<InterpreterVisitor>();
     for (int i = start; i <= end; i++) {
-      String new_var = var.concat(((Integer)i).toString());
-      Vector<AssignmentOperationElement> tmp_vec = element.getAssignmentElements();
+      String repl = orig.concat(":").concat(((Integer)i).toString());
+      Vector<AssignmentOperationElement> vec = element.getAssignmentElements();
+      Vector<AssignmentOperationElement> tmp_vec = new Vector<AssignmentOperationElement>();
+      for (int count = 0; count < vec.size(); count++) {
+          AssignmentOperationElement elem = vec.elementAt(count);
+          AssignmentOperationElement tmp_elem = new AssignmentOperationElement(elem);
+          tmp_vec.add(tmp_elem);
+      }      
       for (int j = 0; j < tmp_vec.size(); j++) {
-        tmp_vec.elementAt(j).replaceText(var, new_var);
+        tmp_vec.elementAt(j).replaceText(orig, repl);
       }
-      mVariableMap.put(new_var, i);
+      mVariableMap.put(repl, i);
       InterpreterVisitor cur_visitor = new InterpreterVisitor(mVariableMap, tmp_vec);
       visitors.add(cur_visitor);
       Thread cur_thread = new Thread(cur_visitor);
@@ -226,6 +232,13 @@ public class InterpreterVisitor extends Visitor implements Runnable {
     }
     // Synchronize the last thread
     SynchronizeVariableMap(visitors.elementAt(threads.size() - 1));
+    // Remove temporary elements in hashtable
+    for (int i = start; i <= end; i++) {
+      String new_var = orig.concat(":").concat(((Integer)i).toString());
+      if (mVariableMap.containsKey(new_var)) {
+          mVariableMap.remove(new_var);
+      }
+    }
 
   }
   public void VisitPrintOperationElement(PrintOperationElement element){
@@ -243,12 +256,14 @@ public class InterpreterVisitor extends Visitor implements Runnable {
       System.out.print("[");
       for (int i = 1; i <= row; i++) {
         System.out.print("(");
-        for (int j = 1; j <= col; j++) {
+        for (int j = 1; j < col; j++) {
           Integer int_result = mat_result.GetValueAt(i, j);
           System.out.print(Integer.toString(int_result));
-          System.out.print(" ");
+          System.out.print(",");
         }
-        System.out.print(") ");
+        Integer int_result = mat_result.GetValueAt(i, col);
+        System.out.print(Integer.toString(int_result));
+        System.out.print(")");
       }
       System.out.println("]");
     }
@@ -299,9 +314,9 @@ public class InterpreterVisitor extends Visitor implements Runnable {
         else {
           // Synchronize this dimension
           Vector<Integer> vec = calculators.elementAt(i).GetThreadedDimension();
-          for (int row = 0; row <= vec.size(); row++) {
+          for (int row = 0; row < vec.size(); row++) {
             int value = vec.elementAt(row).intValue();
-            res_mat.SetValueAt(row, i+1, value);
+            res_mat.SetValueAt(row+1, i+1, value);
           }
         }
       }
@@ -323,6 +338,7 @@ class MatrixOperationThread implements Runnable {
     mThreadedMatR = matR;
     mDimensionNum = dim;
     mType = type;
+    mThreadedDim = new Vector<Integer>();
   }
 
   public Vector<Integer> GetThreadedDimension() {
@@ -344,10 +360,10 @@ class MatrixOperationThread implements Runnable {
         for (int j = 1; j <= mThreadedMatL.GetCol(); j++) {
           int left = mThreadedMatL.GetValueAt(i, j);
           int right = mThreadedMatR.GetValueAt(j, mDimensionNum);
-          tmp_arr[j] = left * right;
+          tmp_arr[j - 1] = left * right;
         }
         int res = 0;
-        for (int count = 0; i < tmp_arr.length; i++)
+        for (int count = 0; count < tmp_arr.length; count++)
           res += tmp_arr[count];
         mThreadedDim.add((Integer)res);
       }

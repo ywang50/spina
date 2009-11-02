@@ -17,16 +17,18 @@ public class Matrix {
 
     public Matrix(int row, int col) {
         if (row > 0 && col > 0) {
-            mElems = new Vector<Integer>(row * col);
+            mElems = new Vector<Integer>();
             mRow = row;
             mCol = col;
+            for (int i = 0; i < row * col; i++)
+                mElems.add(new Integer(0));
         }
     }
 
     public Matrix(Vector<String> vec, int row) {
         int size = vec.size();
         if (row > 0 && size > 0) {
-            mElems = new Vector<Integer>(size);
+            mElems = new Vector<Integer>();
             for (int i = 0; i < size; i++) {
                 String str_value = vec.elementAt(i);
                 Integer int_value = Integer.decode(str_value);
@@ -56,7 +58,7 @@ public class Matrix {
     }
 
     public Integer GetValueAt(int row, int col) {
-        int location = (row - 1) * mCol + col;
+        int location = (row - 1) * mCol + (col - 1);
         if (location < 0 && location >= mElems.size()) {
             //error
         }
@@ -64,7 +66,7 @@ public class Matrix {
     }
 
     public void SetValueAt(int row, int col, Integer value) {
-        int location = (row - 1) * mCol + col;
+        int location = (row - 1) * mCol + (col - 1);
         if (location < 0 && location >= mElems.size()) {
             //error
         }

@@ -21,6 +21,17 @@ public class MatrixElement extends Element{
     mElems = new Vector<String>();
   }
 
+  public MatrixElement(MatrixElement elem) {
+    mRow = elem.getRow();
+    mElems = new Vector<String>();
+    for (int i = 1; i <= elem.getRow(); i++) {
+        for (int j = 1; j <= elem.getCol(); j++) {
+            String txt = new String(elem.getText(i, j));
+            mElems.add(txt);
+        }
+    }
+  }
+
   public void Accept(Visitor visitor){
     visitor.VisitMatrixElement(this);
   }

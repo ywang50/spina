@@ -15,6 +15,14 @@ public class VariableElement extends Element {
 
   String mText;
 
+  public VariableElement() {
+      
+  }
+
+  public VariableElement(VariableElement elem) {
+    mText = new String(elem.getText());
+  }
+
   public void Accept(Visitor visitor){
     visitor.VisitVariableElement(this);
   }

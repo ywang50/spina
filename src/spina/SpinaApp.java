@@ -6,6 +6,11 @@ package spina;
 
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
+import org.antlr.runtime.*;
+import java.util.Vector;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * The main class of the application.

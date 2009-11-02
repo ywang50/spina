@@ -1,0 +1,7 @@
+indexer:ind<i> := var:i * var:i  ;
+var:i := int:1 ;
+function:print indexer:ind<i> ;
+1
+var:i := int:9 ;
+function:print indexer:ind<i> ;
+81

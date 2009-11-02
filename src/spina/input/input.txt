@@ -1,0 +1,8 @@
+parallel-for ( i = 0 .. 9 ) 
+{ 
+    ind<i> = i * i;
+}
+i = 1;
+print ind<i>;
+i = 9;
+print ind<i>;

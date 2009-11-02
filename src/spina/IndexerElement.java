@@ -14,6 +14,20 @@ public class IndexerElement extends Element {
   private String nameText;
   private String iterText;
 
+  public IndexerElement() {
+      
+  }
+
+  public IndexerElement(String name, String iter) {
+    nameText = new String(name);
+    iterText = new String(iter);
+  }
+
+  public IndexerElement(IndexerElement elem) {
+    nameText = new String(elem.getName());
+    iterText = new String(elem.getIter());
+  }
+
   public void Accept(Visitor visitor){
     visitor.VisitIndexerElement(this);
   }

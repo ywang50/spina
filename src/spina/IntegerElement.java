@@ -12,7 +12,15 @@ package spina;
 
 public class IntegerElement extends Element {
 
-  String mText;  
+  String mText;
+
+  public IntegerElement() {
+      
+  }
+
+  public IntegerElement(IntegerElement elem) {
+      mText = new String(elem.getText());
+  }
 
   public void Accept(Visitor visitor){
     visitor.VisitIntegerElement(this);

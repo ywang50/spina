@@ -17,7 +17,7 @@ public class PrettyPrintVisitor extends Visitor {
     System.out.print("var:" + element.getText() + " ");
   }
   public void VisitIndexerElement(IndexerElement element){
-    ///////////
+    System.out.print("indexer:" + element.getName() + "<" + element.getIter() + "> ");
   }
   public void VisitIntegerElement(IntegerElement element){
     System.out.print("int:" + element.getText() + " ");
