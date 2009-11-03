@@ -1,10 +1,8 @@
 ////////////////////////////////////////////////////////////////////////
 // PrettyPrintVisitor.java: demonstrates printing the syntax tree in 
-//  a difference source language than the input for the Interp language.
+//  a difference source language than the input for the Spina language.
 // 
 // version: 1.0
-// description: part of the interpreter example for the visitor design
-//  pattern.
 // author: Yehong Wang (ywang50@syr.edu)
 // language: Java 1.6.0.0
 ////////////////////////////////////////////////////////////////////////
@@ -17,13 +15,13 @@ public class PrettyPrintVisitor extends Visitor {
     System.out.print("var:" + element.getText() + " ");
   }
   public void VisitIndexerElement(IndexerElement element){
-    System.out.print("indexer:" + element.getName() + "<" + element.getIter() + "> ");
+    System.out.print("indexer:" + element.getText() + " ");
   }
   public void VisitIntegerElement(IntegerElement element){
     System.out.print("int:" + element.getText() + " ");
   }
   public void VisitMatrixElement(MatrixElement element) {
-      //////////
+    System.out.print("matrix: ");
   }
   public void VisitAssignmentOperationElement(AssignmentOperationElement element){
     VisitElement(element.getLhs());

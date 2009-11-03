@@ -1,7 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+////////////////////////////////////////////////////////////////////////
+// IndexerElement.java: holds the data needed to represent Indexers
+// in the Spina language
+//
+// version: 1.0
+// author: Yehong Wang (ywang50@syr.edu)
+// language: Java 1.6.0.0
+////////////////////////////////////////////////////////////////////////
 
 package spina;
 
@@ -13,6 +17,7 @@ public class IndexerElement extends Element {
 
   private String nameText;
   private String iterText;
+  private String mText;
 
   public IndexerElement() {
       
@@ -21,6 +26,7 @@ public class IndexerElement extends Element {
   public IndexerElement(String name, String iter) {
     nameText = new String(name);
     iterText = new String(iter);
+    mText = new String (nameText + "<" + iterText + ">");
   }
 
   public IndexerElement(IndexerElement elem) {
@@ -36,6 +42,7 @@ public class IndexerElement extends Element {
   public void setName(String text) { nameText = text; }
   public String getIter() { return iterText; }
   public void setIter(String text) { iterText = text; }
+  public String getText() { return mText; }
 
   public void replaceIteratorText(String orig, String repl) {
       if (iterText.equals(orig)) {

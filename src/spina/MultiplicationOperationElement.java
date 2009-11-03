@@ -1,7 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+////////////////////////////////////////////////////////////////////////
+// MultiplicationOperationElement.java: holds the data needed for
+// an multiplication operation.
+//
+// version: 1.0
+// author: Yehong Wang (ywang50@syr.edu)
+// language: Java 1.6.0.0
+////////////////////////////////////////////////////////////////////////
 
 package spina;
 

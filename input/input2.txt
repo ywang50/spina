@@ -1,0 +1,10 @@
+parallel-for ( i = 0 .. 9 ) 
+{ 
+    ind<i> = i * i;
+}
+i = 1; print ind<i>;
+i = 9; print ind<i>;
+
+a = [(1,2,3)(4,5,6)];
+b = [(1,2)(3,4)(5,6)];
+c = a * b; print c;

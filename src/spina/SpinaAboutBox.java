@@ -1,6 +1,10 @@
-/*
- * SpinaAboutBox.java
- */
+////////////////////////////////////////////////////////////////////////
+// SpinaAboutBox.java
+//
+// version: 1.0
+// author: Yehong Wang (ywang50@syr.edu)
+// language: Java 1.6.0.0
+////////////////////////////////////////////////////////////////////////
 
 package spina;
 
@@ -98,7 +102,7 @@ public class SpinaAboutBox extends javax.swing.JDialog {
                             .addComponent(appVendorLabel)
                             .addComponent(appHomepageLabel)))
                     .addComponent(appTitleLabel, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(appDescLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                    .addComponent(appDescLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
                     .addComponent(closeButton))
                 .addContainerGap())
         );
@@ -122,7 +126,7 @@ public class SpinaAboutBox extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(homepageLabel)
                     .addComponent(appHomepageLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(closeButton)
                 .addContainerGap())
         );

@@ -1,16 +1,15 @@
-/*
- * SpinaApp.java
- */
+////////////////////////////////////////////////////////////////////////
+// SpinaApp.java - Program entry point
+//
+// version: 1.0
+// author: Yehong Wang (ywang50@syr.edu)
+// language: Java 1.6.0.0
+////////////////////////////////////////////////////////////////////////
 
 package spina;
 
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
-import org.antlr.runtime.*;
-import java.util.Vector;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  * The main class of the application.

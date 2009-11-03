@@ -1,6 +1,10 @@
-/*
- * SpinaView.java
- */
+////////////////////////////////////////////////////////////////////////
+// SpinaView.java - Spina user interface
+//
+// version: 1.0
+// author: Yehong Wang (ywang50@syr.edu)
+// language: Java 1.6.0.0
+////////////////////////////////////////////////////////////////////////
 
 package spina;
 
@@ -12,21 +16,28 @@ import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import org.antlr.runtime.*;
-import java.util.Vector;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  * The application's main frame.
  */
 public class SpinaView extends FrameView {
 
-    InterpreterVisitor interp_visitor = new InterpreterVisitor();
-    PrettyPrintVisitor print_visitor = new PrettyPrintVisitor();
+    private SpinaExecutor spinaExe = new SpinaExecutor();
+    private final String output_redir = "out.txt";
+    private FileOperator redir = new FileOperator(new File(output_redir), FileOperator.FileOperatorType.IO_Redirector);
     
     public SpinaView(SingleFrameApplication app) {
         super(app);
 
         initComponents();
+
+        // Redirect system output to a file
+        redir.StartOutputRedirection();
+
+        // Load initial file
+        LoadInitialFile();
 
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
@@ -161,28 +172,35 @@ public class SpinaView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 339, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
-                .addContainerGap())
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
+                        .addComponent(jButton1))))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
+                        .addGap(6, 6, 6)
+                        .addComponent(jButton1))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         jLabel1.getAccessibleContext().setAccessibleName(resourceMap.getString("jLabel1.AccessibleContext.accessibleName")); // NOI18N
@@ -192,7 +210,7 @@ public class SpinaView extends FrameView {
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.META_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setLabel(resourceMap.getString("jMenuItem1.label")); // NOI18N
         jMenuItem1.setName("jMenuItem1"); // NOI18N
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -203,9 +221,14 @@ public class SpinaView extends FrameView {
         fileMenu.add(jMenuItem1);
         jMenuItem1.getAccessibleContext().setAccessibleName(resourceMap.getString("jMenuItem1.AccessibleContext.accessibleName")); // NOI18N
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.META_MASK));
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem2.setLabel(resourceMap.getString("jMenuItem2.label")); // NOI18N
         jMenuItem2.setName("jMenuItem2"); // NOI18N
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         fileMenu.add(jMenuItem2);
         jMenuItem2.getAccessibleContext().setAccessibleName(resourceMap.getString("jMenuItem2.AccessibleContext.accessibleName")); // NOI18N
 
@@ -240,11 +263,11 @@ public class SpinaView extends FrameView {
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
+            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(statusMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 353, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 479, Short.MAX_VALUE)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusAnimationLabel)
@@ -267,54 +290,108 @@ public class SpinaView extends FrameView {
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void VisitLine(String line){
-      ANTLRStringStream string_stream = new ANTLRStringStream(line);
-      spinaLexer lexer = new spinaLexer(string_stream);
-      CommonTokenStream tokens = new CommonTokenStream(lexer);
-      spinaParser parser = new spinaParser(tokens);
-      try {
-	spinaParser.program_return program = parser.program();
-        Vector<Element> elements = program.ret;
-        for(int i = 0; i < elements.size(); i++){
-          Element curr = elements.get(i);
-          curr.Accept(print_visitor);
-          curr.Accept(interp_visitor);
-        }
-      } catch (RecognitionException e)  {
-        System.out.println(e.getMessage());
-      }
-    }
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-      try {
-        // Redirect output to a file
-        FileOutputStream fos = new FileOutputStream("out.txt");
-        PrintStream ps = new PrintStream(fos);
-        System.setOut(ps);
-
-        // Calculate the results
-        String str = this.jTextArea1.getText();
-        VisitLine(str);
-
+    private void GetRedirectedSystemOutput() {
         // Redirect the output from the file to JTextArea
-        FileInputStream fis = new FileInputStream("out.txt");
-        DataInputStream in = new DataInputStream(fis);
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+      try {
         String strLine;
         this.jTextArea2.setText("");
-        while ((strLine = br.readLine()) != null)
+        while ((strLine = redir.ReadLine()) != null)
           this.jTextArea2.append(strLine + "\n");
       }
       catch (Exception e) {
         System.out.println(e.toString());
       }
+    }
+    
+    private void ExecuteSpina() {
+      try {
+        // Create new output-redirecting file
+        redir.StartOutputRedirection();
+        // Calculate the results
+        String str = this.jTextArea1.getText();
+        spinaExe.VisitLine(str);
+        GetRedirectedSystemOutput();
+      }
+      catch (Exception e) {
+        System.out.println(e.toString());
+      }
+    }
+
+    private void LoadInitialFile() {
+      File init_file = new File("input/input.txt");
+      if (init_file == null) {
+        System.out.println("Failed to load initial file!");
+        return;
+      }
+      try {
+        FileOperator op = new FileOperator(init_file, FileOperator.FileOperatorType.File_Reader);
+        String strLine;
+        this.jTextArea1.setText("");
+        this.jTextArea2.setText("");
+        while ((strLine = op.ReadLine()) != null)
+          this.jTextArea1.append(strLine + "\n");
+        op.Close();
+      }
+      catch (Exception e) {
+        System.out.println(e.toString());
+      }
+    }
+
+    private void LoadFile() {
+      try {
+        JFileChooser chooser;
+//        FileFilter filter;
+  //      filter = new FileFilter();
+        chooser = new JFileChooser(".");
+        chooser.showOpenDialog(mainPanel);
+        File file = chooser.getSelectedFile();
+        if (file == null) return;
+        FileOperator op = new FileOperator(file, FileOperator.FileOperatorType.File_Reader);
+        String strLine;
+        this.jTextArea1.setText("");
+        this.jTextArea2.setText("");
+        while ((strLine = op.ReadLine()) != null)
+          this.jTextArea1.append(strLine + "\n");
+        op.Close();
+      }
+      catch (Exception e) {
+        System.out.println(e.toString());
+      }
+    }
+
+    private void SaveFile() {
+      try {
+        JFileChooser chooser = new JFileChooser(".");
+        if (chooser.showSaveDialog(mainPanel) == JFileChooser.APPROVE_OPTION) {
+          File file = chooser.getSelectedFile();
+          FileOperator op = new FileOperator(file, FileOperator.FileOperatorType.File_Writer);
+          String content = this.jTextArea1.getText();
+          if (op.Save(content))
+            JOptionPane.showMessageDialog(null, file, "Program Saved!", JOptionPane.INFORMATION_MESSAGE);
+          else
+            JOptionPane.showMessageDialog(null, file, "Program Not Saved!", JOptionPane.ERROR_MESSAGE);
+          op.Close();
+        }
+      }
+      catch (Exception e) {
+        System.out.println(e.toString());
+      }
+    }
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+      ExecuteSpina();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        
+      LoadFile();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+      SaveFile();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
